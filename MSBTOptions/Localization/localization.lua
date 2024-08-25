@@ -171,6 +171,7 @@ obj["mainEvent"]			= { label="Main Event:"}
 obj["triggerCondition"]		= { label="Condition:", tooltip="The condition to test."}
 obj["triggerRelation"]		= { label="Relation:"}
 obj["triggerParameter"]		= { label="Parameter:"}
+obj["strata"]               = { label="Frame stata:"}
 
 
 ------------------------------

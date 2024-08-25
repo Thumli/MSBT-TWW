@@ -561,6 +561,16 @@ local function OnUpdateAnimationFrame(this, elapsed)
 end
 
 
+-- ****************************************************************************
+-- Called when the mod variables are initialized.
+-- ****************************************************************************
+local function OnVariablesInitialized()
+	if (MSBTProfiles.currentProfile.animationFrameStrata ~= nil) then
+		animationFrame:SetFrameStrata(MSBTProfiles.currentProfile.animationFrameStrata)
+	end
+end
+
+
 -------------------------------------------------------------------------------
 -- Initialization.
 -------------------------------------------------------------------------------
@@ -591,6 +601,7 @@ fontLoaderFrame:Hide()
 -- Protected Variables.
 module.scrollAreas					= scrollAreas
 module.animationStyles				= animationStyles
+module.animationFrame				= animationFrame
 module.stickyAnimationStyles		= stickyAnimationStyles
 
 -- Protected Functions.
@@ -603,3 +614,4 @@ module.IterateScrollAreas			= IterateScrollAreas
 module.LoadFont						= LoadFont
 module.DisplayMessage				= DisplayMessage
 module.DisplayEvent					= DisplayEvent
+module.OnVariablesInitialized		= OnVariablesInitialized

@@ -3750,6 +3750,9 @@ local function OnEvent(this, event, arg1)
 		-- Let the media module know the variables are initialized.
 		MikSBT.Media.OnVariablesInitialized()
 
+		-- Let the animations module know the variables are initialized.
+		MikSBT.Animations.OnVariablesInitialized()
+
 	-- Variables for all addons loaded.
 	elseif (event == "VARIABLES_LOADED") then
 		-- Disable or enable the mod depending on the saved setting.

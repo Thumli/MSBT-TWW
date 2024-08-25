@@ -725,6 +725,12 @@ local function GeneralTab_Populate()
 	controls.enableSoundsCheckbox:SetChecked(not currentProfile.soundsDisabled)
 	controls.textShadowingCheckbox:SetChecked(not currentProfile.textShadowingDisabled)
 	controls.animationSpeedSlider:SetValue(currentProfile.animationSpeed)
+	if (currentProfile.animationFrameStrata == nil) then
+		controls.strataDropdown:SetSelectedID("HIGH")
+		currentProfile.animationFrameStrata = "HIGH"
+	else
+		controls.strataDropdown:SetSelectedID(currentProfile.animationFrameStrata)
+	end
 end
 
 
@@ -873,7 +879,7 @@ local function GeneralTab_Create()
 	local dropdown = MSBTControls.CreateDropdown(tabFrame)
 	objLocale = L.DROPDOWNS["profile"]
 	dropdown:Configure(180, objLocale.label, objLocale.tooltip)
-	dropdown:SetPoint("TOPLEFT", controls.enableCheckbox, "BOTTOMLEFT", 0, -30)
+	dropdown:SetPoint("TOPLEFT", controls.enableCheckbox, "BOTTOMLEFT", 0, -15)
 	dropdown:SetChangeHandler(
 		function (this, id)
 			MSBTProfiles.SelectProfile(id)
@@ -888,7 +894,7 @@ local function GeneralTab_Create()
 	local button = MSBTControls.CreateOptionButton(tabFrame)
 	objLocale = L.BUTTONS["copyProfile"]
 	button:Configure(20, objLocale.label, objLocale.tooltip)
-	button:SetPoint("TOPLEFT", dropdown, "BOTTOMLEFT", 0, -20)
+	button:SetPoint("TOPLEFT", dropdown, "BOTTOMLEFT", 0, -10)
 	button:SetClickHandler(
 		function (this)
 			local objLocale = L.EDITBOXES["copyProfile"]
@@ -946,11 +952,25 @@ local function GeneralTab_Create()
 	controls.deleteProfileButton = button
 
 
+	-- Strata dropdown.
+	local strataDropdown = MSBTControls.CreateDropdown(tabFrame)
+	objLocale = L.DROPDOWNS["strata"]
+	strataDropdown:Configure(180, objLocale.label, objLocale.tooltip)
+	strataDropdown:SetPoint("TOPLEFT", controls.copyProfileButton, "BOTTOMLEFT", 0, -15)
+	strataDropdown:SetChangeHandler(
+		function (this, id)
+			MSBTProfiles.SetOption(nil, "animationFrameStrata", id)
+			MSBTAnimations.animationFrame:SetFrameStrata(id)
+		end
+	)
+	controls.strataDropdown = strataDropdown
+
+
 	-- Animation speed slider.
 	local slider = MSBTControls.CreateSlider(tabFrame)
 	objLocale = L.SLIDERS["animationSpeed"]
 	slider:Configure(180, objLocale.label, objLocale.tooltip)
-	slider:SetPoint("TOPLEFT", controls.copyProfileButton, "BOTTOMLEFT", 0, -35)
+	slider:SetPoint("TOPLEFT", controls.strataDropdown, "BOTTOMLEFT", 0, -15)
 	slider:SetMinMaxValues(20, 250)
 	slider:SetValueStep(10)
 	slider:SetValueChangedHandler(
@@ -1102,6 +1122,17 @@ local function GeneralTab_Create()
 	dropdown:SetSelectedID(currentProfileName)
 	dropdown:Sort()
 	GeneralTab_ToggleDeleteButton()
+
+
+	-- Populate the strata dropdown.
+	strataDropdown:AddItem("BACKGROUND", "BACKGROUND")
+	strataDropdown:AddItem("LOW", "LOW")
+	strataDropdown:AddItem("MEDIUM", "MEDIUM")
+	strataDropdown:AddItem("HIGH", "HIGH")
+	strataDropdown:AddItem("DIALOG", "DIALOG")
+	strataDropdown:AddItem("FULLSCREEN", "FULLSCREEN")
+	strataDropdown:AddItem("FULLSCREEN_DIALOG", "FULLSCREEN_DIALOG")
+	strataDropdown:AddItem("TOOLTIP", "TOOLTIP")
 
 	tabFrame.created = true
 end
